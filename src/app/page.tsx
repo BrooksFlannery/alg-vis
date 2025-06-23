@@ -4,9 +4,9 @@ import { Card, CardDescription, CardHeader, CardTitle } from "~/components/ui/ca
 export default function HomePage() {
   return (
     <>
-      <div className="w-full flex flex-col gap-5 items-center">
+      <div className="w-full flex flex-col gap-[2dvh] items-center">
 
-        <Link className="w-sm" href="/merge-sort">
+        <Link className="w-[50dvw]" href="/merge-sort">
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Merge Sort</CardTitle>
@@ -14,7 +14,7 @@ export default function HomePage() {
             </CardHeader>
           </Card>
         </Link>
-        <Link className="w-sm" href="/depth-first-search">
+        <Link className="w-[50dvw]" href="/depth-first-search">
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Depth First Search</CardTitle>
