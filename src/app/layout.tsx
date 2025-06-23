@@ -19,7 +19,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`}>
-      <body>{children}</body>
+      <body className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#0f0024] to-[#000000] text-white text-center">
+        <h1 className=" my-[2dvh] text-5xl font-extrabold tracking-tight text-[hsl(280,46%,65%)] sm:text-[5rem]">
+          Algorithm <span className="text-[hsl(280,47%,42%)]">Visualizer</span>
+        </h1>
+        {children}
+      </body>
     </html>
   );
 }
