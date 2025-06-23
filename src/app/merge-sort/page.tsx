@@ -1,52 +1,36 @@
 'use client'
 
-export default function MergeSort() {
-    const startArray = [7, 2, 9, 1, 5, 10, 3, 6, 8, 4];
+import { useEffect, useState } from "react";
+import Display from "~/components/ui/display";
+import type { AlgHistory } from "~/lib/type";
+import { mergeSort } from "~/algorithms/mergesort";
+import { buildAlgState } from "~/lib/utils";
+
+
+export default function MergeSortPage() {
+    const startArray = [7, 2, 1, 5, 3, 6, 8, 4];
+    const depthArr = new Array(startArray.length).fill(0)//so fancy
+    const algStartHistory = buildAlgState(startArray, depthArr)
+    const [history, setHistory] = useState<AlgHistory>([algStartHistory])
+    const [historyIndex, setHistoryIndex] = useState<number>(0)
     const handleSort = () => {
-        const sortedArray = mergeSort(startArray);
-        console.log(sortedArray)
+        setHistory(mergeSort(startArray))
+        console.log('sorted')
     }
 
-    function mergeSort(arr: number[]): number[] {
-        if (arr.length === 1) return arr;
-        let arrA = arr.slice(0, (arr.length / 2));
-        let arrB = arr.slice((arr.length / 2) + 1 / arr.length);
 
-        arrA = mergeSort(arrA);
-        arrB = mergeSort(arrB);
-
-        return merge(arrA, arrB);
-    }
-
-    function merge(arrA: number[], arrB: number[]): number[] {
-        let arrC: number[] = [];
-
-
-        while (arrA.length > 0 && arrB.length > 0) {
-            if (arrA[0]! < arrB[0]!) {
-                const element = arrA.shift() as number
-                arrC.push(element)
-            } else {
-                const element = arrB.shift() as number
-
-                arrC.push(element)
-            }
-        }
-
-        if (arrA.length > 0) {
-            arrC.push(...arrA)
-        } else {
-            arrC.push(...arrB)
-        }
-        return arrC
-    }
 
     return (
         <>
             <div>
                 {JSON.stringify(startArray)}
             </div >
+            <button onClick={() => setHistoryIndex(historyIndex - 1)}>Back</button>
             <button onClick={handleSort}>Sort</button>
+            <button onClick={() => setHistoryIndex(historyIndex + 1)}>Forward</button>
+
+            {/* we really need to check if history index is valid but fuck it for now */}
+            <Display algState={history[historyIndex]!} />
         </>
     )
 }
