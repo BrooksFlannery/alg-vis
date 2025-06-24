@@ -1,4 +1,5 @@
 export type AlgElement = {
+    id: number;
     horizontalOffset: number;
     verticalOffset: number;
     height: number;
