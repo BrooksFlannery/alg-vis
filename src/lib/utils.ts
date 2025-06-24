@@ -14,7 +14,7 @@ export function buildAlgState(
   arr: number[],
   depth: number[],
   ids: number[],
-  maxDepth: number,
+  maxDepth: number = 0,
 ): AlgState {
   const maxValue = Math.max(...arr); // get the true max
 

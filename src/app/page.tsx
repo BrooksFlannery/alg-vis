@@ -14,11 +14,27 @@ export default function HomePage() {
             </CardHeader>
           </Card>
         </Link>
-        <Link className="w-[50dvw]" href="/depth-first-search">
+        <Link className="w-[50dvw]" href="/selection-sort">
           <Card className="w-full">
             <CardHeader>
-              <CardTitle>Depth First Search</CardTitle>
-              <CardDescription>The Depth First Search Algorithm Visualized</CardDescription>
+              <CardTitle>Selection Sort</CardTitle>
+              <CardDescription>The Selection Sort Algorithm Visualized</CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+        <Link className="w-[50dvw]" href="/bubble-sort">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Bubble Sort</CardTitle>
+              <CardDescription>The Bubble Sort Algorithm Visualized</CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+        <Link className="w-[50dvw]" href="/binary-search">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Binary Search</CardTitle>
+              <CardDescription>The Binary Search Algorithm Visualized</CardDescription>
             </CardHeader>
           </Card>
         </Link>

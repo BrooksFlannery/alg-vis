@@ -5,13 +5,12 @@ import Display from "~/components/ui/display";
 import { Button } from "~/components/ui/button";
 import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
 import type { AlgHistory } from "~/lib/type";
-import { mergeSort } from "~/algorithms/mergesort";
+import { bubblesort } from "~/algorithms/bubblesort";
 
+export default function BubbleSortPage() {
+    const startArray = [7, 11, 2, 10, 1, 5, 9, 3, 12, 6, 8, 4];
 
-export default function MergeSortPage() {
-    const startArray = useMemo(() => [7, 11, 2, 16, 10, 1, 5, 15, 14, 9, 3, 12, 6, 8, 4, 13], []);
-
-    const history = useMemo<AlgHistory>(() => mergeSort(startArray), [startArray]);
+    const history = useMemo<AlgHistory>(() => bubblesort(startArray), [startArray]);
 
     const [historyIndex, setHistoryIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -42,7 +41,7 @@ export default function MergeSortPage() {
     return (
         <>
             {history.length > 0 && <Display algState={history[historyIndex]!} />}
-            <span>MergeSort</span>
+            <span>BubbleSort</span>
             <div className="flex gap-2">
                 {/* Previous */}
                 <Button
