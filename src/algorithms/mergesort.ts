@@ -1,32 +1,13 @@
 import type { AlgHistory } from "~/lib/type";
 import { buildAlgState } from "~/lib/utils";
 
-//we need to modify the main array in place instead of creating tons of subarrays bc i have no idea how to get a state out of that mess of recursion.
-//then we can just push the modified working array
-//need to switch to depth in array or something
-//at max depth in an 8 item list depth array should look like [3,3,2,2,1,1,1,1]
-/*
-depth array through time
-[0, 0, 0, 0, 0, 0, 0, 0]
-[1, 1, 1, 1, 1, 1, 1, 1]
-[2, 2, 2, 2, 1, 1, 1, 1]
-[3, 3, 2, 2, 1, 1, 1, 1]
-[2, 2, 2, 2, 1, 1, 1, 1]
-[2, 2, 3, 3, 1, 1, 1, 1]
-[2, 2, 2, 2, 1, 1, 1, 1]
-[1, 1, 1, 1, 1, 1, 1, 1]
-[1, 1, 1, 1, 2, 2, 2, 2]
-[1, 1, 1, 1, 3, 3, 2, 2]
-
-
-
-
-*/
 export function mergeSort(arr: number[]): AlgHistory {
     const working = [...arr];
-    const depthArr = new Array(arr.length).fill(0)//so fancy
+    const ids = working.map((value, index) => index);// we need id arr bc react hates me. this feels like a weird work around
+    const depthArr = new Array(arr.length).fill(0);
+    const maxDepthEver = Math.ceil(Math.log2(arr.length));
     console.log(depthArr);
-    const history: AlgHistory = [buildAlgState(working, depthArr)];
+    const history: AlgHistory = [buildAlgState(working, depthArr, ids, maxDepthEver)];
 
     split(0, working.length - 1, 0);
     return history;
@@ -39,7 +20,7 @@ export function mergeSort(arr: number[]): AlgHistory {
         for (let i = start; i <= end; i++) {// i bet there is some built in method for this
             depthArr[i] = depth;
         }
-        history.push(buildAlgState([...working], [...depthArr]));
+        history.push(buildAlgState([...working], [...depthArr], [...ids], maxDepthEver));
 
         split(start, mid, depth + 1);
         split(mid + 1, end, depth + 1);
@@ -50,6 +31,8 @@ export function mergeSort(arr: number[]): AlgHistory {
     function merge(start: number, mid: number, end: number, depth: number) {
         const left = working.slice(start, mid + 1);
         const right = working.slice(mid + 1, end + 1);
+        const leftIds = ids.slice(start, mid + 1);
+        const rightIds = ids.slice(mid + 1, end + 1);
 
         //dual pointer pattern
         let i = start;
@@ -61,28 +44,29 @@ export function mergeSort(arr: number[]): AlgHistory {
         while (l < left.length && r < right.length) {
             if (left[l]! <= right[r]!) {
                 working[i] = left[l++]!;
+                ids[i] = leftIds[l - 1]!;
             } else {
                 working[i] = right[r++]!;
+                ids[i] = rightIds[r - 1]!;
             }
             depthArr[i] = depth;
-            // history.push(buildAlgState([...working], [...depthArr]));
             i++;
         }
 
         while (l < left.length) {
             working[i] = left[l++]!;
+            ids[i] = leftIds[l - 1]!;
             depthArr[i] = depth;
-            // history.push(buildAlgState([...working], [...depthArr]));
             i++;
         }
 
         while (r < right.length) {
             working[i] = right[r++]!;
+            ids[i] = rightIds[r - 1]!;
             depthArr[i] = depth;
-            // history.push(buildAlgState([...working], [...depthArr]));
             i++;
         }
-        history.push(buildAlgState([...working], [...depthArr]));
+        history.push(buildAlgState([...working], [...depthArr], [...ids], maxDepthEver));
 
     }
 }
