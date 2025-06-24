@@ -1,20 +1,37 @@
 'use client'
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Display from "~/components/ui/display";
 import { Button } from "~/components/ui/button";
 import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
 import type { AlgHistory } from "~/lib/type";
-import { mergeSort } from "~/algorithms/mergesort";
+import binarysearch from "~/algorithms/binarysearch";
 
-
-export default function MergeSortPage() {
-    const startArray = useMemo(() => [7, 11, 2, 16, 10, 1, 5, 15, 14, 9, 3, 12, 6, 8, 4, 13], []);
-
-    const history = useMemo<AlgHistory>(() => mergeSort(startArray), [startArray]);
-
+export default function BinarySortPage() {
+    const startArray = [1, 2, 3, 5, 6, 8, 9, 10, 13];
+    const [targetInput, setTargetInput] = useState("8");
+    const [history, setHistory] = useState<AlgHistory>([]);
     const [historyIndex, setHistoryIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const parseTarget = (input: string) => {
+        const n = Number(input.trim());
+        return Number.isFinite(n) ? n : null;
+    };
+
+    const commitTarget = () => {
+        const parsed = parseTarget(targetInput);
+        if (parsed !== null) {
+            const newHistory = binarysearch(startArray, parsed);
+            setHistory(newHistory);
+            setHistoryIndex(0);
+            setIsPlaying(false);
+        }
+    };
+
+    useEffect(() => {
+        commitTarget();
+    }, []);
 
     useEffect(() => {
         if (!isPlaying) return;
@@ -27,41 +44,27 @@ export default function MergeSortPage() {
                 return prev + 1;
             });
         }, 500);
-
         return () => clearInterval(id);
     }, [isPlaying, history.length]);
-
-    const nextStep = () => {
-        setHistoryIndex((prev) => Math.min(prev + 1, history.length - 1));
-    };
-
-    const prevStep = () => {
-        setHistoryIndex((prev) => Math.max(prev - 1, 0));
-    };
 
     return (
         <>
             {history.length > 0 && <Display algState={history[historyIndex]!} />}
-            <span>MergeSort</span>
+            <span>Binary Search</span>
+
             <div className="flex gap-2">
-                {/* Previous */}
                 <Button
                     variant="secondary"
                     size="sm"
-                    onClick={prevStep}
+                    onClick={() => setHistoryIndex(prev => Math.max(prev - 1, 0))}
                     disabled={historyIndex === 0}
                 >
                     <ChevronLeft className="h-4 w-4" />
                     <span className="sr-only">Previous</span>
                 </Button>
 
-                {/* Play / Pause */}
                 {isPlaying ? (
-                    <Button
-                        variant="default"
-                        size="sm"
-                        onClick={() => setIsPlaying(false)}
-                    >
+                    <Button variant="default" size="sm" onClick={() => setIsPlaying(false)}>
                         <Pause className="h-4 w-4" />
                         <span className="sr-only">Pause</span>
                     </Button>
@@ -85,7 +88,7 @@ export default function MergeSortPage() {
                 <Button
                     variant="secondary"
                     size="sm"
-                    onClick={nextStep}
+                    onClick={() => setHistoryIndex(prev => Math.min(prev + 1, history.length - 1))}
                     disabled={historyIndex >= history.length - 1}
                 >
                     <ChevronRight className="h-4 w-4" />
@@ -97,6 +100,27 @@ export default function MergeSortPage() {
                 Step {historyIndex + 1} / {history.length}
             </p>
 
+            <div className="mt-4">
+                <label className="mr-2" htmlFor="target-input">Target:</label>
+                <input
+                    id="target-input"
+                    type="text"
+                    value={targetInput}
+                    onChange={(e) => setTargetInput(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            commitTarget();
+                        }
+                    }}
+                    onBlur={commitTarget}
+                    className="w-20 rounded border px-2 py-1 text-center"
+                />
+            </div>
+
+            {parseTarget(targetInput) === null && (
+                <p className="mt-2 text-sm text-destructive">Please enter a valid number.</p>
+            )}
         </>
-    )
+    );
 }

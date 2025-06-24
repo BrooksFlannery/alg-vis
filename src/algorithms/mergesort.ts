@@ -6,7 +6,6 @@ export function mergeSort(arr: number[]): AlgHistory {
     const ids = working.map((value, index) => index);// we need id arr bc react hates me. this feels like a weird work around
     const depthArr = new Array(arr.length).fill(0);
     const maxDepthEver = Math.ceil(Math.log2(arr.length));
-    console.log(depthArr);
     const history: AlgHistory = [buildAlgState(working, depthArr, ids, maxDepthEver)];
 
     split(0, working.length - 1, 0);
@@ -15,7 +14,6 @@ export function mergeSort(arr: number[]): AlgHistory {
     function split(start: number, end: number, depth: number) {
         if (start >= end) return;
         const mid = Math.floor((start + end) / 2);
-
 
         for (let i = start; i <= end; i++) {// i bet there is some built in method for this
             depthArr[i] = depth;
@@ -39,34 +37,31 @@ export function mergeSort(arr: number[]): AlgHistory {
         let l = 0;
         let r = 0;
 
-
-
         while (l < left.length && r < right.length) {
             if (left[l]! <= right[r]!) {
+                ids[i] = leftIds[l]!;
                 working[i] = left[l++]!;
-                ids[i] = leftIds[l - 1]!;
             } else {
+                ids[i] = rightIds[r]!;
                 working[i] = right[r++]!;
-                ids[i] = rightIds[r - 1]!;
             }
             depthArr[i] = depth;
             i++;
         }
 
         while (l < left.length) {
+            ids[i] = leftIds[l]!;
             working[i] = left[l++]!;
-            ids[i] = leftIds[l - 1]!;
             depthArr[i] = depth;
             i++;
         }
 
         while (r < right.length) {
+            ids[i] = rightIds[r]!;
             working[i] = right[r++]!;
-            ids[i] = rightIds[r - 1]!;
             depthArr[i] = depth;
             i++;
         }
         history.push(buildAlgState([...working], [...depthArr], [...ids], maxDepthEver));
-
     }
 }
