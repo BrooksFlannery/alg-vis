@@ -1,37 +1,39 @@
-// import type { AlgHistory } from "~/lib/type";
 
-import type { AlgHistory } from "~/lib/type";
+import type { AlgHistory, BaseAlgElement } from "~/lib/type";
 import { buildAlgState } from "~/lib/utils";
 
-export function selectionsort(arr: number[]) {
-    const working = [...arr];
-    const ids = working.map((value, index) => index);// we need id arr bc react hates me. this feels like a weird work around
-    const depthArr = new Array(arr.length).fill(0);
-    const history: AlgHistory = [buildAlgState(working, depthArr, ids)];
+export function selectionsort(arr: number[]): AlgHistory {
+    const working: BaseAlgElement[] = arr.map((value, index) => ({ id: index, value, depth: 0, style: 'default' }));
+
+    const history: AlgHistory = [buildAlgState(working)];
 
     for (let i = 0; i < working.length - 1; i++) {
         let jMin = i;
+        working[jMin]!.style = 'active';
         for (let j = i + 1; j < working.length; j++) {
-            if (working[j]! < working[jMin]!) {
+            working[j]!.style = 'active'
+            if (j - 1 !== jMin) working[j - 1]!.style = 'default'
+            history.push(buildAlgState(working));
+
+            if (working[j]!.value < working[jMin]!.value) {
+                working[jMin]!.style = 'default'
                 jMin = j;
             }
         }
+        working[working.length - 1]!.style = 'default';
+
         if (jMin !== i) {
-            //working[i]
-            //working[jMin]
-
             const temp = working[i]!;
-            const tempId = ids[i]!;
             working[i] = working[jMin]!;
-            ids[i] = ids[jMin]!;
-            working[jMin] = temp
-            ids[jMin] = tempId;
-
-            history.push(buildAlgState([...working], [...depthArr], [...ids]));
+            working[jMin] = temp;
+            working[i]!.style = 'complete'
+            history.push(buildAlgState(working));
+        } else {
+            working[i]!.style = 'complete'
+            history.push(buildAlgState(working))
         }
-
-
     }
-
-    return history
+    working[working.length - 1]!.style = 'complete';
+    history.push(buildAlgState(working));
+    return history;
 }
