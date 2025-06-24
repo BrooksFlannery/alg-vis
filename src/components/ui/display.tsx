@@ -1,7 +1,6 @@
 import type { AlgState } from "~/lib/type";
 
 export default function Display({ algState }: { algState: AlgState }) {
-    //ok this took fking forever to figure out. apparently just givig the objects an id isnt good enough bc react hates when you move items around in the array i guess. i think it fucks with the virtual dom somehow, so i stabilize the list before we try rendering it and that seems to make react happy. need to really look into the virtual dom at some point along with like 700 other things i dont understand.
     const stableList = [...algState].sort((a, b) => a.id - b.id);
 
     return (
@@ -20,11 +19,17 @@ export default function Display({ algState }: { algState: AlgState }) {
                         }}
                     >
                         <rect
-                            fill="lightpink"
+                            fill={
+                                element.style === "complete"
+                                    ? "#8080FF"
+                                    : element.style === "active"
+                                        ? "#80FF80"
+                                        : "whitesmoke"
+                            }
+                            width={element.width}
+                            height={element.height}
                             style={{
-                                width: element.width,
-                                height: element.height,
-                                transition: 'height 300ms ease-in-out, width 300ms ease-in-out',
+                                transition: "height 300ms ease-in-out, width 300ms ease-in-out",
                             }}
                         />
                         <text

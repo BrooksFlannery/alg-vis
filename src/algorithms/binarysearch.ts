@@ -1,43 +1,47 @@
-import type { AlgHistory } from "~/lib/type";
+import type { AlgHistory, BaseAlgElement } from "~/lib/type";
 import { buildAlgState } from "~/lib/utils";
 
 export default function binarysearch(arr: number[], target: number): AlgHistory {
 
-    const working = [...arr];
-    const ids = working.map((value, index) => index);
-    const depthArr = new Array(arr.length).fill(0);
-    const maxDepth = 1;
-    const history: AlgHistory = [buildAlgState(working, depthArr, ids, maxDepth)];
+    const working: BaseAlgElement[] = arr.map((value, index) => ({ id: index, value, depth: 0, style: 'default' }));
 
-    search(0, arr.length - 1); // we need some fallback if the item isnt found
+    const maxDepth = 1;
+    const history: AlgHistory = [buildAlgState(working, maxDepth)];
+
+    search(0, arr.length - 1);
 
     function search(start: number, end: number) {
-        // base-case: empty range => value not present
         if (start > end) {
-            depthArr.fill(0);
-            history.push(buildAlgState([...working], [...depthArr], [...ids], maxDepth));
-            return;
-        };
-
-        const middle = Math.floor((start + end) / 2);
-
-        // highlight the current middle element in the depth array
-        depthArr.fill(0);
-        depthArr[middle] = 1;
-        history.push(buildAlgState([...working], [...depthArr], [...ids], maxDepth));
-
-        if (working[middle] === target) {
-            // push one more identical frame so the highlight lingers an extra step
-            history.push(buildAlgState([...working], [...depthArr], [...ids], maxDepth));
+            working.forEach((e) => {
+                e.depth = 0;
+                e.style = 'default'
+            });
+            history.push(buildAlgState(working, maxDepth));
             return;
         }
 
-        if (working[middle]! > target) {
+        const middle = Math.floor((start + end) / 2);
+
+        working.forEach((e) => (e.depth = 0));
+        working[middle]!.depth = 1;
+        working[middle]!.style = 'active'
+        history.push(buildAlgState(working, maxDepth));
+
+        if (working[middle]!.value === target) {
+            working[middle]!.style = 'complete'
+            history.push(buildAlgState(working, maxDepth));
+            return;
+        }
+
+        if (working[middle]!.value > target) {
+            working[middle]!.style = 'default'
             search(start, middle - 1);
             return;
         }
 
+        working[middle]!.style = 'default'
         search(middle + 1, end);
     }
-    return history
+
+    return history;
 }
