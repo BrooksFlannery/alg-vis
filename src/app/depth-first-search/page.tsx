@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { breadthFirstSearch } from '~/algorithms/bfs';
+import { depthFirstSearch } from '~/algorithms/dfs';
 import DisplayGraph from '~/components/ui/displayGraph';
 import PlayerControls from '~/components/ui/player-controls';
 import { usePlayback } from '~/hooks/usePlayback';
 import type { NodeElement } from '~/lib/type';
 
-export default function BreadthFirstSearchPage() {
+export default function DepthFirstSearchPage() {
     const A = { name: "A", coordinates: { x: 100, y: 100 }, connections: [], style: 'default' } as NodeElement;
     const B = { name: "B", coordinates: { x: 200, y: 100 }, connections: [], style: 'default' } as NodeElement;
     const C = { name: "C", coordinates: { x: 300, y: 100 }, connections: [], style: 'default' } as NodeElement;
@@ -49,10 +49,7 @@ export default function BreadthFirstSearchPage() {
     O.connections = [N, P];
     P.connections = [L, O];
 
-    // The full graph
     const graph = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P];
-
-
 
     const [startInput, setStartInput] = useState("A");
 
@@ -60,8 +57,7 @@ export default function BreadthFirstSearchPage() {
     const getStartNode = (name: string) =>
         graph.find((node) => node.name.toLowerCase() === name.trim().toLowerCase()) ?? null;
 
-    const [startNode, setStartNode] = useState<NodeElement>(A);
-    const [history, setHistory] = useState(() => breadthFirstSearch(graph, A));
+    const [history, setHistory] = useState(() => depthFirstSearch(graph, A));
 
     const {
         index,
@@ -77,8 +73,7 @@ export default function BreadthFirstSearchPage() {
     const commitStart = () => {
         const node = getStartNode(startInput);
         if (node) {
-            setStartNode(node);
-            const newHistory = breadthFirstSearch(graph, node);
+            const newHistory = depthFirstSearch(graph, node);
             setHistory(newHistory);
             reset();
             setIsPlaying(false);
@@ -88,12 +83,12 @@ export default function BreadthFirstSearchPage() {
     return (
         <>
             <h1 className="my-[2dvh] text-5xl font-extrabold tracking-tight text-[hsl(280,46%,65%)] sm:text-[5rem]">
-                Breadth First <span className="text-[hsl(280,47%,42%)]">Search</span>
+                Depth First <span className="text-[hsl(280,47%,42%)]">Search</span>
             </h1>
 
             {history.length > 0 && <DisplayGraph graphState={history[index]!} />}
 
-            <span>Breadth First Search</span>
+            <span>Depth First Search</span>
 
             <PlayerControls
                 isPlaying={isPlaying}
