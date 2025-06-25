@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import type { BaseAlgElement, DisplayElement, AlgState } from "./type"
+import type { BaseAlgElement, DisplayAlgElement, AlgState } from "./type"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -13,7 +13,7 @@ const GAP = 10;
 export function buildAlgState(
   state: BaseAlgElement[],
   maxDepth: number = 0,
-): DisplayElement[] {
+): DisplayAlgElement[] {
   if (state.length === 0) return [];
 
   const values = state.map((s) => s.value);
@@ -24,7 +24,7 @@ export function buildAlgState(
 
   const depthStep = maxDepth > 0 ? (VIEW_BOX_HEIGHT - maxHeight) / maxDepth : 0;
 
-  const displayState: DisplayElement[] = state.map((element, index) => {
+  const displayState: DisplayAlgElement[] = state.map((element, index) => {
     const height = (element.value / maxValue) * maxHeight;
 
     return {

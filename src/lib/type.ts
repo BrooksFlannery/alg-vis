@@ -9,12 +9,25 @@ export type BaseAlgElement = {
 };
 
 //this takes the place of the old algElement
-export type DisplayElement = BaseAlgElement & {
+export type DisplayAlgElement = BaseAlgElement & {
     horizontalOffset: number;
     verticalOffset: number;
     height: number;
     width: number;
 };
 
-export type AlgState = DisplayElement[];
+export type AlgState = DisplayAlgElement[];
 export type AlgHistory = AlgState[];
+
+
+//eventually we will make this base Element and create a display node element just like we do for the algElemtns
+export type NodeElement = {
+    name: string;
+    coordinates: { x: number; y: number };
+    connections: NodeElement[];
+    style: 'active' | 'default' | 'complete'
+
+}
+
+export type GraphState = NodeElement[]
+export type GraphHistory = GraphState[]
