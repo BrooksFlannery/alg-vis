@@ -5,11 +5,11 @@ export default function HomePage() {
   return (
     <>
       <h1 className=" my-[2dvh] text-5xl font-extrabold tracking-tight text-[hsl(280,46%,65%)] sm:text-[5rem]">
-        Algorithm <span className="text-[hsl(280,47%,42%)]">Visualizer</span>
+        Algorithm <br /> <span className="text-[hsl(280,47%,42%)]">Visualizer</span>
       </h1>
       <div className="w-full flex flex-col gap-[2dvh] items-center">
 
-        <Link className="w-[50dvw]" href="/merge-sort">
+        <Link className="w-[50dvw] max-w-100" href="/merge-sort">
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Merge Sort</CardTitle>
@@ -17,7 +17,7 @@ export default function HomePage() {
             </CardHeader>
           </Card>
         </Link>
-        <Link className="w-[50dvw]" href="/selection-sort">
+        <Link className="w-[50dvw] max-w-100" href="/selection-sort">
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Selection Sort</CardTitle>
@@ -25,7 +25,7 @@ export default function HomePage() {
             </CardHeader>
           </Card>
         </Link>
-        <Link className="w-[50dvw]" href="/bubble-sort">
+        <Link className="w-[50dvw] max-w-100" href="/bubble-sort">
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Bubble Sort</CardTitle>
@@ -33,7 +33,7 @@ export default function HomePage() {
             </CardHeader>
           </Card>
         </Link>
-        <Link className="w-[50dvw]" href="/binary-search">
+        <Link className="w-[50dvw] max-w-100" href="/binary-search">
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Binary Search</CardTitle>
@@ -41,7 +41,7 @@ export default function HomePage() {
             </CardHeader>
           </Card>
         </Link>
-        <Link className="w-[50dvw]" href="/breadth-first-search">
+        <Link className="w-[50dvw] max-w-100" href="/breadth-first-search">
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Breadth First Search(BFS)</CardTitle>
@@ -49,7 +49,7 @@ export default function HomePage() {
             </CardHeader>
           </Card>
         </Link>
-        <Link className="w-[50dvw]" href="/depth-first-search">
+        <Link className="w-[50dvw] max-w-100" href="/depth-first-search">
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Depth First Search(BFS)</CardTitle>

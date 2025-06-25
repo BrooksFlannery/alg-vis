@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { breadthFirstSearch } from '~/algorithms/bfs';
 import DisplayGraph from '~/components/ui/displayGraph';
+import HomeButton from '~/components/ui/home-button';
 import PlayerControls from '~/components/ui/player-controls';
 import { usePlayback } from '~/hooks/usePlayback';
 import type { NodeElement } from '~/lib/type';
@@ -87,8 +88,10 @@ export default function BreadthFirstSearchPage() {
 
     return (
         <>
+            <HomeButton />
+
             <h1 className="my-[2dvh] text-5xl font-extrabold tracking-tight text-[hsl(280,46%,65%)] sm:text-[5rem]">
-                Breadth First <span className="text-[hsl(280,47%,42%)]">Search</span>
+                Breadth<br />  First <br /> <span className="text-[hsl(280,47%,42%)]">Search</span>
             </h1>
 
             {history.length > 0 && <DisplayGraph graphState={history[index]!} />}

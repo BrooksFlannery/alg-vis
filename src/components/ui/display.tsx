@@ -16,8 +16,10 @@ export default function Display({ algState, fps = 10 }: { algState: AlgState; fp
                 // round to 3 decimal places so backend and frontend dont mismatch
                 const x = Math.round(element.horizontalOffset * 1000) / 1000;
                 const y = Math.round(element.verticalOffset * 1000) / 1000;
+
                 return (
-                    <g
+
+                    < g
                         key={element.id}
                         style={{
                             transform: `translate(${x}px, ${y}px)`,
@@ -42,15 +44,17 @@ export default function Display({ algState, fps = 10 }: { algState: AlgState; fp
                         <text
                             x={element.width / 2}
                             y={element.height / 2}
-                            fill="white"
+                            fill='black'
                             textAnchor="middle"
                             dominantBaseline="middle"
+                            fontSize={element.width}
+
                         >
                             {element.value}
                         </text>
                     </g>
                 )
             })}
-        </svg>
+        </svg >
     )
 }
