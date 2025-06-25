@@ -41,6 +41,14 @@ export default function HomePage() {
             </CardHeader>
           </Card>
         </Link>
+        <Link className="w-[50dvw]" href="/breadth-first-search">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Breadth First Search(BFS)</CardTitle>
+              <CardDescription>The Breadth First Search Algorithm Visualized</CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
       </div>
     </>
   );

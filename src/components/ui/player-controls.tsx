@@ -71,7 +71,7 @@ export default function PlayerControls({
                     step={0.5}
                     value={fps}
                     onChange={(e) => setFps(Number(e.target.value))}
-                    className="w-64"
+                    className="w-64 accent-[hsl(280,46%,65%)]"
                 />
             </div>
         </div>
