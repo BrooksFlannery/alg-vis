@@ -5,6 +5,7 @@ import Display from "~/components/ui/display";
 import { mergeSort } from "~/algorithms/mergesort";
 import { usePlayback } from "~/hooks/usePlayback";
 import PlayerControls from "~/components/ui/player-controls";
+import HomeButton from "~/components/ui/home-button";
 
 export default function MergeSortPage() {
     const startArray = useMemo(() => [7, 11, 2, 16, 10, 1, 5, 15, 14, 9, 3, 12, 6, 8, 4, 13], []);
@@ -24,8 +25,9 @@ export default function MergeSortPage() {
 
     return (
         <>
+            <HomeButton />
             <h1 className=" my-[2dvh] text-5xl font-extrabold tracking-tight text-[hsl(280,46%,65%)] sm:text-[5rem]">
-                Merge <span className="text-[hsl(280,47%,42%)]">Sort</span>
+                Merge <br /> <span className="text-[hsl(280,47%,42%)]">Sort</span>
             </h1>
             {history.length > 0 && <Display fps={fps} algState={history[index]!} />}
             <span>MergeSort</span>

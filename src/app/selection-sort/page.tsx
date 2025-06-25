@@ -5,6 +5,7 @@ import Display from "~/components/ui/display";
 import { selectionsort } from "~/algorithms/selectionsort";
 import { usePlayback } from "~/hooks/usePlayback";
 import PlayerControls from "~/components/ui/player-controls";
+import HomeButton from "~/components/ui/home-button";
 
 export default function SelectionSortPage() {
     const startArray = [7, 11, 2, 10, 1, 5, 9, 3, 12, 6, 8, 4];
@@ -24,8 +25,9 @@ export default function SelectionSortPage() {
 
     return (
         <>
+            <HomeButton />
             <h1 className=" my-[2dvh] text-5xl font-extrabold tracking-tight text-[hsl(280,46%,65%)] sm:text-[5rem]">
-                Selection <span className="text-[hsl(280,47%,42%)]">Sort</span>
+                Selection <br /> <span className="text-[hsl(280,47%,42%)]">Sort</span>
             </h1>
             {history.length > 0 && <Display fps={fps} algState={history[index]!} />}
             <span>SelectionSort</span>

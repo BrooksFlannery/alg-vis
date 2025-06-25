@@ -6,9 +6,10 @@ import PlayerControls from "~/components/ui/player-controls";
 import { usePlayback } from "~/hooks/usePlayback";
 import type { AlgHistory } from "~/lib/type";
 import binarysearch from "~/algorithms/binarysearch";
+import HomeButton from "~/components/ui/home-button";
 
 export default function BinarySortPage() {
-    const startArray = [1, 2, 3, 5, 6, 8, 9, 10, 13];
+    const startArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const [targetInput, setTargetInput] = useState("8");
     const [history, setHistory] = useState<AlgHistory>([]);
 
@@ -44,8 +45,10 @@ export default function BinarySortPage() {
 
     return (
         <>
+            <HomeButton />
+
             <h1 className=" my-[2dvh] text-5xl font-extrabold tracking-tight text-[hsl(280,46%,65%)] sm:text-[5rem]">
-                Binary <span className="text-[hsl(280,47%,42%)]">Search</span>
+                Binary<br /><span className="text-[hsl(280,47%,42%)]">Search</span>
             </h1>
             {history.length > 0 && <Display fps={fps} algState={history[index]!} />}
             <span>Binary Search</span>
