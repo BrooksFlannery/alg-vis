@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Display from "~/components/ui/display";
-import { Button } from "~/components/ui/button";
-import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
+import PlayerControls from "~/components/ui/player-controls";
+import { usePlayback } from "~/hooks/usePlayback";
 import type { AlgHistory } from "~/lib/type";
 import binarysearch from "~/algorithms/binarysearch";
 
@@ -11,8 +11,17 @@ export default function BinarySortPage() {
     const startArray = [1, 2, 3, 5, 6, 8, 9, 10, 13];
     const [targetInput, setTargetInput] = useState("8");
     const [history, setHistory] = useState<AlgHistory>([]);
-    const [historyIndex, setHistoryIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
+
+    const {
+        index,
+        isPlaying,
+        setIsPlaying,
+        fps,
+        setFps,
+        nextStep,
+        prevStep,
+        reset,
+    } = usePlayback(history.length);
 
     const parseTarget = (input: string) => {
         const n = Number(input.trim());
@@ -24,7 +33,7 @@ export default function BinarySortPage() {
         if (parsed !== null) {
             const newHistory = binarysearch(startArray, parsed);
             setHistory(newHistory);
-            setHistoryIndex(0);
+            reset();
             setIsPlaying(false);
         }
     };
@@ -33,71 +42,31 @@ export default function BinarySortPage() {
         commitTarget();
     }, []);
 
-    useEffect(() => {
-        if (!isPlaying) return;
-        const id = setInterval(() => {
-            setHistoryIndex((prev) => {
-                if (prev >= history.length - 1) {
-                    setIsPlaying(false);
-                    return prev;
-                }
-                return prev + 1;
-            });
-        }, 500);
-        return () => clearInterval(id);
-    }, [isPlaying, history.length]);
-
     return (
         <>
-            {history.length > 0 && <Display algState={history[historyIndex]!} />}
+            <h1 className=" my-[2dvh] text-5xl font-extrabold tracking-tight text-[hsl(280,46%,65%)] sm:text-[5rem]">
+                Binary <span className="text-[hsl(280,47%,42%)]">Search</span>
+            </h1>
+            {history.length > 0 && <Display fps={fps} algState={history[index]!} />}
             <span>Binary Search</span>
 
-            <div className="flex gap-2">
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => setHistoryIndex(prev => Math.max(prev - 1, 0))}
-                    disabled={historyIndex === 0}
-                >
-                    <ChevronLeft className="h-4 w-4" />
-                    <span className="sr-only">Previous</span>
-                </Button>
+            <PlayerControls
+                isPlaying={isPlaying}
+                onPlay={() => {
+                    if (index >= history.length - 1) reset();
+                    setIsPlaying(true);
+                }}
+                onPause={() => setIsPlaying(false)}
+                onNext={nextStep}
+                onPrev={prevStep}
+                canPrev={index > 0}
+                canNext={index < history.length - 1}
+                fps={fps}
+                setFps={setFps}
+            />
 
-                {isPlaying ? (
-                    <Button variant="default" size="sm" onClick={() => setIsPlaying(false)}>
-                        <Pause className="h-4 w-4" />
-                        <span className="sr-only">Pause</span>
-                    </Button>
-                ) : (
-                    <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => {
-                            if (historyIndex >= history.length - 1) {
-                                setHistoryIndex(0);
-                            }
-                            setIsPlaying(true);
-                        }}
-                        disabled={history.length <= 1}
-                    >
-                        <Play className="h-4 w-4" />
-                        <span className="sr-only">Play</span>
-                    </Button>
-                )}
-
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => setHistoryIndex(prev => Math.min(prev + 1, history.length - 1))}
-                    disabled={historyIndex >= history.length - 1}
-                >
-                    <ChevronRight className="h-4 w-4" />
-                    <span className="sr-only">Next</span>
-                </Button>
-            </div>
-
-            <p className="text-sm">
-                Step {historyIndex + 1} / {history.length}
+            <p className="mt-2 text-sm">
+                Step {index + 1} / {history.length}
             </p>
 
             <div className="mt-4">

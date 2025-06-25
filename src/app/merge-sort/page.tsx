@@ -1,102 +1,51 @@
 'use client'
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import Display from "~/components/ui/display";
-import { Button } from "~/components/ui/button";
-import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
-import type { AlgHistory } from "~/lib/type";
 import { mergeSort } from "~/algorithms/mergesort";
-
+import { usePlayback } from "~/hooks/usePlayback";
+import PlayerControls from "~/components/ui/player-controls";
 
 export default function MergeSortPage() {
     const startArray = useMemo(() => [7, 11, 2, 16, 10, 1, 5, 15, 14, 9, 3, 12, 6, 8, 4, 13], []);
 
-    const history = useMemo<AlgHistory>(() => mergeSort(startArray), [startArray]);
+    const history = useMemo(() => mergeSort(startArray), [startArray]);
 
-    const [historyIndex, setHistoryIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (!isPlaying) return;
-        const id = setInterval(() => {
-            setHistoryIndex((prev) => {
-                if (prev >= history.length - 1) {
-                    setIsPlaying(false);
-                    return prev;
-                }
-                return prev + 1;
-            });
-        }, 500);
-
-        return () => clearInterval(id);
-    }, [isPlaying, history.length]);
-
-    const nextStep = () => {
-        setHistoryIndex((prev) => Math.min(prev + 1, history.length - 1));
-    };
-
-    const prevStep = () => {
-        setHistoryIndex((prev) => Math.max(prev - 1, 0));
-    };
+    const {
+        index,
+        isPlaying,
+        setIsPlaying,
+        fps,
+        setFps,
+        nextStep,
+        prevStep,
+        reset,
+    } = usePlayback(history.length);
 
     return (
         <>
-            {history.length > 0 && <Display algState={history[historyIndex]!} />}
+            <h1 className=" my-[2dvh] text-5xl font-extrabold tracking-tight text-[hsl(280,46%,65%)] sm:text-[5rem]">
+                Merge <span className="text-[hsl(280,47%,42%)]">Sort</span>
+            </h1>
+            {history.length > 0 && <Display fps={fps} algState={history[index]!} />}
             <span>MergeSort</span>
-            <div className="flex gap-2">
-                {/* Previous */}
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={prevStep}
-                    disabled={historyIndex === 0}
-                >
-                    <ChevronLeft className="h-4 w-4" />
-                    <span className="sr-only">Previous</span>
-                </Button>
-
-                {/* Play / Pause */}
-                {isPlaying ? (
-                    <Button
-                        variant="default"
-                        size="sm"
-                        onClick={() => setIsPlaying(false)}
-                    >
-                        <Pause className="h-4 w-4" />
-                        <span className="sr-only">Pause</span>
-                    </Button>
-                ) : (
-                    <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => {
-                            if (historyIndex >= history.length - 1) {
-                                setHistoryIndex(0);
-                            }
-                            setIsPlaying(true);
-                        }}
-                        disabled={history.length <= 1}
-                    >
-                        <Play className="h-4 w-4" />
-                        <span className="sr-only">Play</span>
-                    </Button>
-                )}
-
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={nextStep}
-                    disabled={historyIndex >= history.length - 1}
-                >
-                    <ChevronRight className="h-4 w-4" />
-                    <span className="sr-only">Next</span>
-                </Button>
-            </div>
-
-            <p className="text-sm">
-                Step {historyIndex + 1} / {history.length}
+            <PlayerControls
+                isPlaying={isPlaying}
+                onPlay={() => {
+                    if (index >= history.length - 1) reset();
+                    setIsPlaying(true);
+                }}
+                onPause={() => setIsPlaying(false)}
+                onNext={nextStep}
+                onPrev={prevStep}
+                canPrev={index > 0}
+                canNext={index < history.length - 1}
+                fps={fps}
+                setFps={setFps}
+            />
+            <p className="mt-2 text-sm">
+                Step {index + 1} / {history.length}
             </p>
-
         </>
     )
 }

@@ -4,6 +4,9 @@ import { Card, CardDescription, CardHeader, CardTitle } from "~/components/ui/ca
 export default function HomePage() {
   return (
     <>
+      <h1 className=" my-[2dvh] text-5xl font-extrabold tracking-tight text-[hsl(280,46%,65%)] sm:text-[5rem]">
+        Algorithm <span className="text-[hsl(280,47%,42%)]">Visualizer</span>
+      </h1>
       <div className="w-full flex flex-col gap-[2dvh] items-center">
 
         <Link className="w-[50dvw]" href="/merge-sort">
