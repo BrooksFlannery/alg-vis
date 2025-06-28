@@ -52,7 +52,7 @@ export default function HomePage() {
         <Link className="w-[50dvw] max-w-100" href="/depth-first-search">
           <Card className="w-full">
             <CardHeader>
-              <CardTitle>Depth First Search(BFS)</CardTitle>
+              <CardTitle>Depth First Search(DFS)</CardTitle>
               <CardDescription>The Depth First Search Algorithm Visualized</CardDescription>
             </CardHeader>
           </Card>
