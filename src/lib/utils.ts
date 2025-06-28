@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import type { BaseAlgElement, DisplayAlgElement, AlgState } from "./type"
+import type { BaseAlgElement, DisplayAlgElement } from "./type"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -12,7 +12,7 @@ const GAP = 10;
 
 export function buildAlgState(
   state: BaseAlgElement[],
-  maxDepth: number = 0,
+  maxDepth = 0,
 ): DisplayAlgElement[] {
   if (state.length === 0) return [];
 
